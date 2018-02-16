@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block body %}
+	<div class="header_con">
+		<div class="header">
+			<div class="welcome fl">欢迎来到天天生鲜!</div>
+			<div class="fr">
+                {% if name|default:'' == '' %}
+                    <div class="login_btn fl">
+					<a href="{% url 'user:login' %}">登录</a>
+					<span>|</span>
+					<a href="{% url 'user:register' %}">注册</a>
+				    </div>
+                {% else %}
+                    <div class="mylogin_info fl">
+					欢迎您：<em>{{ name }}</em>
+                    <span>|</span>
+                    <a href="{% url 'user:logout' %}">退出</a>
+				    </div>
+                {% endif %}
+
+				<div class="user_link fl">
+					<span>|</span>
+					<a href="{% url 'user:info' %}">用户中心</a>
+					<span>|</span>
+					<a href="{% url 'my_cart:cart' %}">我的购物车</a>
+					<span>|</span>
+					<a href="/user/order_1/">我的订单</a>
+				</div>
+			</div>
+		</div>		
+	</div>
+
+	<div class="search_bar clearfix">
+		<a href="index.html" class="logo fl"><img src="/static/images/logo.png"></a>
+		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;用户中心</div>
+		<div class="search_con fr">
+			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
+			<input type="button" class="input_btn fr" name="" value="搜索">
+		</div>		
+	</div>
+
+	<div class="main_con clearfix">
+		<div class="left_menu_con clearfix">
+			<h3>用户中心</h3>
+			<ul>
+				<li><a href="user_center_info.html">· 个人信息</a></li>
+				<li><a href="user_center_order.html" class="active">· 全部订单</a></li>
+				<li><a href="user_center_site.html">· 收货地址</a></li>
+			</ul>
+		</div>
+		<div class="right_content clearfix">
+				<h3 class="common_title2">全部订单</h3>
+                {% for x in page %}
+				<ul class="order_list_th w978 clearfix">
+					<li class="col01">{{ x.acdate }}</li>
+					<li class="col02">订单号：{{ x.acid }}</li>
+					<li class="col02 stress">未支付</li>		
+				</ul>
+
+				<table class="order_list_table w980">
+					<tbody>
+						<tr>
+							<td width="55%">
+                                {% for y in x.accountdetailinfo_set.all %}
+								<ul class="order_goods_list clearfix">					
+									<li class="col01"><img src="/static/{{ y.goods.gpic }}"></li>
+									<li class="col02">{{ y.goods.gtitle }}<em>{{ y.goods.gprice }}元/{{ y.goods.gunit }}</em></li>
+									<li class="col03">{{ y.count }}</li>
+									<li class="col04">{{ y.price }}元</li>
+								</ul>
+								{% endfor %}
+							</td>
+							<td width="15%">{{ x.actotle }}元</td>
+							<td width="15%">待付款</td>
+							<td width="15%"><a href="#" class="oper_btn">去付款</a></td>
+						</tr>
+					</tbody>
+				</table>
+                {% endfor %}
+                <div class="pagenation">
+                {% if page.has_previous %}
+				<a href="/order_{{ page.previous_page_number }}/">上一页</a>
+                {% endif %}
+                {% for pindex in paginator.page_range %}
+                {% if pindex == page.number %}
+				<a href="#" class="active">{{ pindex }}</a>
+                {% else %}
+                <a href="/order_{{ pindex}}/">{{ pindex }}</a>
+                {% endif %}
+                {% endfor %}
+                {% if page.has_next %}
+                <a href="/order_{{ page.next_page_number }}/">下一页</a>
+			    {% endif %}
+			    </div>
+				
+
+
+
+		</div>
+	</div>
+{% endblock body %}
