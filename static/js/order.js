@@ -17,7 +17,8 @@ function total(){
 
   }
 $(function(){
-    $('#total').hide()
+    $(':checkbox').hide();
+    $('#total').hide();
     total();
 })
 

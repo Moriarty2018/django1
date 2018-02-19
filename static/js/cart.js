@@ -7,6 +7,7 @@
                     total();
 
 
+
                 }
             })
         }
@@ -31,17 +32,16 @@
   /*function my_account() {
       t_account=0;
       t_count=0;
-      $(':checkbox').not('#check_all').each(function () {
+      $(':checkbox').not('#check_all').prop('checked',true).each(function () {
           num=$(this).next().next().next().next().text();
           pri= $(this).next().next().next().next().next().filter('.num_show').val();
           t_account1=parseFloat(num)*parseFloat(pri);
           $(this).text(t_account1.toFixed(2));
-          if($(this).prop('checked')){
-              t_account+=t_account1;
-              t_count++;
-              $('#total').text(t_account.toFixed(2));
-              $('.total_count1').text(t_count);
-          }
+          t_account+=t_account1;
+          t_count++;
+          $('#total').text(t_account.toFixed(2));
+          $('.total_count1').text(t_count);
+
 
 
 
@@ -52,15 +52,20 @@
         total1=0;
         total_count=0;
         $('.col07').each(function () {
-            count=$(this).prev().find('input').val();
-            price=$(this).prev().prev().text();
-            total0=parseFloat(count)*parseFloat(price);
-            $(this).text(total0.toFixed(2));
+            if($(this).prev().prev().prev().prev().prev().prev().prop('checked',true)){
+                count=$(this).prev().find('input').val();
+                price=$(this).prev().prev().text();
+                total0=parseFloat(count)*parseFloat(price);
+                $(this).text(total0.toFixed(2));
 
-            total1+=total0;
-            total_count++;
-            $('#total').text(total1.toFixed(2));
-            $('.total_count1').text(total_count);
+                total1+=total0;
+                total_count++;
+                $('#total').text(total1.toFixed(2));
+                $('.total_count1').text(total_count);
+
+            }
+
+
         })
 
 
@@ -72,7 +77,9 @@
 
 
     $(function(){
+        $(':checkbox').hide();
         total();
+
 
         $('#check_all').click(function(){
             state=$(this).prop('checked');
@@ -84,15 +91,17 @@
                     $('#check_all').prop('checked',true);
                     total();
 
+
                 }
                 else{
                     $('#check_all').prop('checked',false);
+
 
                 }
 
 
             }
-            //total();
+            total();
 
         })
         $('.add').click(function(){
@@ -102,6 +111,7 @@
             $(this).parents('.col07').text(new_price);
             total();
 
+
         })
         $('.minus').click(function () {
             txt=$(this).prev();
@@ -110,6 +120,7 @@
                 var new_price = parseFloat(parseFloat(txt.val())-1)*parseFloat($(this).parents('.col05').text());
                 $(this).parents('.col07').text(new_price);
                 total();
+
 
             }
             else {
@@ -148,6 +159,7 @@
         $.get('/my_cart/edit'+cart_id+'_'+count+'/').done(function(data){
             if(data.ok==0){
                 total();
+
 
             }
             else{

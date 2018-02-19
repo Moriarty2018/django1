@@ -1,4 +1,5 @@
 $(function () {
+    $('#good').hide();
     var a = parseFloat($('#price1').val())*parseFloat($('#num1').text());
     $('#zprice').text(a.toFixed(2));
     $('#zprice1 b').text(a.toFixed(2));
